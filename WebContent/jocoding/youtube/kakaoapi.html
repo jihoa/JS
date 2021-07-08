@@ -27,8 +27,8 @@
 	                })
 	                    .done(function (msg) {
 	                    	//console.log(msg);
-	                        console.log(msg.documents[0].title);
-	                        console.log(msg.documents[0].thumbnail);
+	                        //console.log(msg.documents[0].title);
+	                        //console.log(msg.documents[0].thumbnail);
 	                        for(var i=0 ; i<msg.documents.length; i++){
 	                         $("p").append("<strong>" + msg.documents[i].title + "</strong>");
 	                         $("p").append("<img src='" + msg.documents[i].thumbnail + "'/><br>");
