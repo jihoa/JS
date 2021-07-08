@@ -38,9 +38,32 @@ window.addEventListener("load", function(){
 
     var titleSorted = false;
 
+    
+    
     titldTd.onclick = function(){
         // 이 부분에 새로 배운 내용을 작성해 보세요.
-       
+    	
+    	tbodyNode.innerHTML = "";
+    	
+    	
+    	if(!titleSorted)
+	    	notices.sort(function(a,b){
+	    		
+	        	titleSorted = true;	   
+	        	
+	    		if(a.title < b.title)
+	    			return -1;
+	    		else if(a.title > b.title)
+	    			return 1;
+	    		else 
+	    			return 0;
+	    	});
+    	else
+    		notices.reverse();
+    	
+    	bindData();
+    	
+
     };
 });
 
@@ -56,16 +79,44 @@ window.addEventListener("load", function(){
     var swapButton = section.querySelector(".swap-button");
 
     allCheckbox.onchange = function(){
+    	
+    	
+        var inputs = tbody.querySelectorAll("input[type='checkbox']");
         
+        for (var i=0; i < inputs.length; i++){
+        	inputs[i].checked = allCheckbox.checked;
+        }
     };
 
     delButton.onclick = function(){
+        var inputs = tbody.querySelectorAll("input[type='checkbox']:checked");
+        
+//        if(inputs[0].checked)
+//        	inputs[0].parentElement.parentElement.remove();
+        for(var i=0; i<inputs.length; i++)
+        	inputs[i].parentElement.parentElement.remove();
         
     };
 
     swapButton.onclick = function(){
-                
+    	var inputs = tbody.querySelectorAll("input[type='checkbox']:checked");
         
+    	if(inputs.length != 2){
+    		alert("2개 선택하세요.");
+    		return;
+    	}
+        
+    	var trs = [];
+    	
+    	for(var i =0 ; i<inputs.length; i++)
+    		trs.push(inputs[i].parentElement.parentElement);
+    	
+    	
+    	var cloneNode = trs[0].cloneNode(true);
+    	
+    	trs[1].replaceWith(cloneNode);
+    	trs[0].replaceWith(trs[1]);
+    	
     };
 
 });
@@ -83,11 +134,30 @@ window.addEventListener("load", function(){
     var currentNode = tbodyNode.firstElementChild;//.children[0];
 
     downButton.onclick = function(){
-        
-
+    	
+    	
+    	var nextNode = currentNode.nextElementSibling;
+    	
+    	if(nextNode == null){
+    		alert("더 이상 이동할 수 없습니다.");
+    		return;
+    	}
+    	
+    	tbodyNode.removeChild(nextNode);
+    	tbodyNode.insertBefore(nextNode, currentNode);
     };
 
     upButton.onclick = function(){
+    	var prevNode = currentNode.previousElementSibling;
+    	
+    	
+    	if(prevNode == null){
+    		alert("더 이상 이동할 수 없습니다.");
+    		return;
+    	}    
+    	
+    	tbodyNode.removeChild(currentNode);
+    	tbodyNode.insertBefore(currentNode, prevNode);
        
     };
 
@@ -102,19 +172,46 @@ window.addEventListener("load", function(){
     ];
 
     var section = document.querySelector("#section7");
-    
+//  테이블
     var noticeList =section.querySelector(".notice-list"); 
     var tbodyNode = noticeList.querySelector("tbody");
     var cloneButton = section.querySelector(".clone-button");
     var templateButton = section.querySelector(".template-button");
 
     cloneButton.onclick = function(){
+    	var trNode = noticeList.querySelector("tbody tr");
+    	var cloneNode = trNode.cloneNode(true);
+    	var tds = cloneNode.querySelectorAll("td");
+    	tds[0].textContent = notices[0].id;
+    	//tds[1].textContent = notices[0].title;
+    	
+    	var aNode = tds[1].children[0];
+    	aNode.href = notices[0].id;
+    	aNode.textContent = notices[0].title;
+    	
+    	tds[2].textContent = notices[0].regDate;
+    	tds[3].textContent = notices[0].writerId;
+    	tds[4].textContent = notices[0].hit;
         
+    	tbodyNode.appendChild(cloneNode);
     };
 
     templateButton.onclick = function(){
-        
-        
+        var template = section.querySelector("template");
+        var cloneNode = document.importNode(template.content, true);
+        var tds = cloneNode.querySelectorAll("td");
+    	tds[0].textContent = notices[0].id;
+    	//tds[1].textContent = notices[0].title;
+    	
+    	var aNode = tds[1].children[0];
+    	aNode.href = notices[0].id;
+    	aNode.textContent = notices[0].title;
+    	
+    	tds[2].textContent = notices[0].regDate;
+    	tds[3].textContent = notices[0].writerId;
+    	tds[4].textContent = notices[0].hit;
+    	
+    	tbodyNode.appendChild(cloneNode);
     };
 
 });
@@ -130,13 +227,20 @@ window.addEventListener("load", function(){
     var delButton = section.querySelector(".del-button");
 
     addButton.onclick = function(){
+        var title = titleInput.value;
         
+        var html = '<a href="">'+title+'</a>';
+        var li = document.createElement("li");
+        li.innerHTML = html;
+        
+        menuListUl.append(li);
 
     };
 
     delButton.onclick = function(){
-       
-
+    	var liNode = menuListUl.children[0];
+    	
+    	liNode.remove();
     };
 
 });
@@ -151,6 +255,9 @@ window.addEventListener("load", function(){
     var colorInput = section.querySelector(".color-input");
 
     changeButton.onclick = function(){
+        img.src = "images/"+srcInput.value;
+        
+        img.style.borderColor = colorInput.value;
         
     };
 
@@ -177,7 +284,11 @@ window.addEventListener("load", function(){
     var btnAdd = section3.querySelector(".btn-add");
     var txtSum = section3.querySelector(".txt-sum");
 
-    btnAdd.onclick = function () {               
+    btnAdd.onclick = function () { 
+        var x = parseInt(txtX.value);           
+        var y = parseInt(txtY.value);
+        
+        txtSum.value = x + y;                  
          
     };
 });
@@ -199,8 +310,11 @@ window.addEventListener("load", function(){
     var txtSum = inputs[3];
     */
 
-    btnAdd.onclick = function () {               
-         
+    btnAdd.onclick = function () { 
+        var x = parseInt(txtX.value);           
+        var y = parseInt(txtY.value);
+        
+        txtSum.value = x + y;    	
     };
 });
 
@@ -212,6 +326,9 @@ window.addEventListener("load", function(){
     var txtSum = document.getElementById("txt-sum");
    
     btnAdd.onclick = function () {               
+         var x = parseInt(txtX.value);           
+         var y = parseInt(txtY.value);
          
+         txtSum.value = x + y;
     };
 });
