@@ -16,15 +16,18 @@ public class UserDAO {
 			String dbURL = "jdbc:oracle:thin:@10.10.0.131:1521:M2";
 			String dbID = "cli";
 			String dbPassword = "cli1993";
-			Class.forName("com.mysql.jdbc.Driver");
+
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
 			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 	
 	public ArrayList<User> search(String userName) {
-		String SQL = "SELECT * FROM USER WHERE userName LIKE ?";
+		String SQL = "SELECT * FROM USER5 WHERE userName LIKE ?";
 		ArrayList<User> userList = new ArrayList<User>();
 		try {
 			pstmt = conn.prepareStatement(SQL);
@@ -45,7 +48,7 @@ public class UserDAO {
 	}
 	
 	public int register(User user) {
-		String SQL = "INSERT INTO  USER VALUES (?, ?, ?, ?)";
+		String SQL = "INSERT INTO  USER5 VALUES (?, ?, ?, ?)";
 		try {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, user.getUserName());
