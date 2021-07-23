@@ -268,7 +268,7 @@ window.addEventListener("load", function(){
     var section4 = document.querySelector("#section4");
     var box = section4.querySelector(".box");
 
-    var input1 = box.children[0];// .childNodes[0];
+    var input1 = box.children[0];//태그만.childNodes[0];-->공백도포함.
     var input2 = box.children[1];
 
     input1.value = "hello";
