@@ -16,7 +16,7 @@
 		searchRequest.onreadystatechange = searchProcess;
 		searchRequest.send(null);
 	}
-	function searchProcess() {
+	function searchProcess() { 
 		var table = document.getElementById('ajaxTable');
 		table.innerHTML = "";
 		if(searchRequest.readyState == 4 && searchRequest.status == 200) {
